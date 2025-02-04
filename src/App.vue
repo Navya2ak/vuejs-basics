@@ -1,32 +1,35 @@
-<script>
-export default {
-  name: "template",
-  data() {
-    return {
-      name: 'navya',
-      status: "active",
-      items: ['Dancing', 'Drawing', 'Singing']
-    }
-  },
-  methods:{
-toggle(){
-  if(this.status=="active") this.status="inactive"
-  else if(this.status=="inactive") this.status="overactive"
-  else if(this.status=="overactive") this.status="active"
 
+<script setup> // Composition API
+import {ref} from "vue"
+
+const name=ref("navya")
+const tasks=ref(['kuli','kazhi','sleep'])
+const task=ref('')
+
+const toggle=()=>{
+name.value=name.value+name.value
 }
-  }
+
+const addTask=()=>{
+if(task.value.length!=0){
+  tasks.value.push(task.value)
+  task.value=''
+}
+}
+
+const removeTask=(index)=>{
+  tasks.value.splice(index,1)
 }
 </script>
 <template>
-  <h1>hey {{ name }}</h1>
-  <p v-if="status == 'active'"> iam here</p>
-  <p v-if="status == 'inactive'"> iam hidden</p>
-  <p v-if="status =='overactive'">I am some where</p>
+  <form @submit.prevent="addTask">
+  <label for="tasks"></label>
+  <input type="text" name="task" id='task' v-model="task">
+  <button type="submit">SUBMIT</button>
+</form>
+  <ol>
+    <li v-for="(t,i) in tasks" key="t">{{ t }} <button @click="removeTask(i)">-</button></li>
+  </ol>
+  
 
-  <h2>My hobbies are</h2>
-  <ul v-for="item in items" key="item">
-    <li>{{ item }}</li>
-  </ul>
-  <button v-on:click="toggle">click me</button>
 </template>
